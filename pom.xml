@@ -10,10 +10,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.dxh</groupId>
-	<artifactId>ShopappBe</artifactId>
+	<artifactId>Elearning</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ShopappBe</name>
-	<description>Web ShopappBe</description>
+	<name>Elearning</name>
+	<description>Web Elearning</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -34,12 +34,6 @@
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 	</properties>
 	<dependencies>
-
-<!--		websocket-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-websocket</artifactId>
-		</dependency>
 
 		<!-- Send Email By SendGrid -->
 		<dependency>
