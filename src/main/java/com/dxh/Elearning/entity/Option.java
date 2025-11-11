@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 
 @Entity
-@Table(name = "option")
+@Table(name = "options")
 @Setter
 @Getter
 @Builder

@@ -33,6 +33,8 @@ public class SecurityConfig {
     private final String[] PUBLIC_GET_ENDPOINTS = {
             "/users/list",
             "/exams/list",
+            "/examparts/list",
+            "/questions/list",
             "/users/list-with-sort-by-multiple-columns",
             "/users/advance-search-with-specification"
     };

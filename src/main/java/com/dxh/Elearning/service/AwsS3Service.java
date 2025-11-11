@@ -51,4 +51,21 @@ public class AwsS3Service {
             throw new AppException(ErrorCode.UPLOAD_FAIL);
         }
     }
+
+    public String saveAudioToS3(MultipartFile audio) {
+        try (InputStream inputStream = audio.getInputStream()) {
+            String s3Filename = "audio/" + UUID.randomUUID() + "_" + audio.getOriginalFilename();
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(audio.getContentType()); // ví dụ audio/mpeg, audio/wav
+            metadata.setContentLength(audio.getSize());
+
+            s3Client.putObject(new PutObjectRequest(bucketName, s3Filename, inputStream, metadata));
+
+            return String.format("https://%s.s3.amazonaws.com/%s", bucketName, s3Filename);
+
+        } catch (Exception e) {
+            throw new AppException(ErrorCode.UPLOAD_FAIL);
+        }
+    }
 }
