@@ -45,5 +45,16 @@ public class User extends AbstractEntity<Long> {
     @ManyToMany
     Set<Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    private List<Answer> answers;
+
+    @OneToMany(mappedBy = "user")
+    private List<WritingSubmission> writingSubmissions;
+
+    @OneToMany(mappedBy = "user")
+    private List<SpeakingSubmission> speakingSubmissions;
+
+    @OneToMany(mappedBy = "user")
+    private List<ExamResult> examResults;
 
 }
