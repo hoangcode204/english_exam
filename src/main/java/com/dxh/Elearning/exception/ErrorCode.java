@@ -51,6 +51,8 @@ public enum ErrorCode {
     ALREADY_VERIFIED(400,"user already verified" ,HttpStatus.BAD_REQUEST ),
     NOT_FOUND_IMAGE(400,"Image not found" ,HttpStatus.BAD_REQUEST ),
     EXAM_NOT_EXISTED(400, "exam not found",HttpStatus.BAD_REQUEST ),
+    USER_EXAM_PART_NOT_EXISTED(400, "exam not found",HttpStatus.BAD_REQUEST ),
+    QUESTION_NOT_FOUND(400, "question not found",HttpStatus.BAD_REQUEST ),
     EXAM_PART_NOT_EXISTED(400, "exam part not found",HttpStatus.BAD_REQUEST );
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

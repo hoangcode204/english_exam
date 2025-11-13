@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +31,6 @@ public class UserExamPart extends AbstractEntity<Long> {
     Boolean submitted;
 
     @OneToMany(mappedBy = "userExamPart", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<UserAnswer> answers;
+    List<UserAnswer> answers;
 }
 
