@@ -26,13 +26,19 @@ public class UserAnswer extends AbstractEntity<Long> {
     Question question;
 
     Long selectedOptionId; // đáp án trắc nghiệm
+    
     @Lob
-    @Column
+    @Column(columnDefinition = "TEXT")
     String answerText;     // bài viết dài, transcript Speaking
+    
+    @Column(length = 1000)
     String audioUrl;       // link ghi âm Speaking
 
     Double score;          // điểm auto (Listening/Reading)
     Double aiScore;        // điểm AI (Writing/Speaking)
+    
+    @Lob
+    @Column(columnDefinition = "TEXT")
     String aiFeedback;     // nhận xét từ AI
 }
 

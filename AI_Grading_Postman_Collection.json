@@ -1,0 +1,160 @@
+{
+  "info": {
+    "name": "AI Grading API",
+    "description": "Collection for testing AI-powered grading endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Writing",
+      "item": [
+        {
+          "name": "Submit Writing Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\\"questionId\\\": 1,\\n  \\\"userExamPartId\\\": 1,\\n  \\\"answerText\\\": \\\"Climate change is one of the most pressing issues facing humanity today. The increasing concentration of greenhouse gases in the atmosphere has led to rising global temperatures, melting ice caps, and more frequent extreme weather events.\\\\n\\\\nTo address this challenge, governments and individuals must take immediate action. Firstly, we need to transition to renewable energy sources such as solar and wind power. Secondly, reducing deforestation and promoting reforestation efforts are crucial. Finally, individuals can contribute by adopting sustainable lifestyles.\\\\n\\\\nIn conclusion, while climate change poses significant threats, collective action can help mitigate its worst effects and create a more sustainable future for all.\\\"\\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai-grading/writing",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai-grading", "writing"]
+            }
+          }
+        },
+        {
+          "name": "Submit Writing Answer - Task 2 (Advantage/Disadvantage)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\\"questionId\\\": 2,\\n  \\\"userExamPartId\\\": 1,\\n  \\\"answerText\\\": \\\"In recent years, online learning has become increasingly popular. While this trend offers several advantages, there are also some drawbacks that should be considered.\\\\n\\\\nOne of the main benefits of online learning is flexibility. Students can study at their own pace and schedule.\\\"\\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai-grading/writing",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai-grading", "writing"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Speaking",
+      "item": [
+        {
+          "name": "Submit Speaking Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\\"questionId\\\": 10,\\n  \\\"userExamPartId\\\": 5,\\n  \\\"audioUrl\\\": \\\"https://your-s3-bucket.s3.amazonaws.com/recordings/user123_question10.mp3\\\",\\n  \\\"transcript\\\": \\\"Hello, today I want to talk about my favorite hobby, which is photography.\\\"\\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai-grading/speaking",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai-grading", "speaking"]
+            }
+          }
+        },
+        {
+          "name": "Submit Speaking Answer - Part 2 (Describe)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\\"questionId\\\": 11,\\n  \\\"userExamPartId\\\": 5,\\n  \\\"audioUrl\\\": \\\"https://your-s3-bucket.s3.amazonaws.com/recordings/user123_question11.mp3\\\",\\n  \\\"transcript\\\": \\\"I'd like to describe a teacher who had a significant influence on my life.\\\"\\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai-grading/speaking",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai-grading", "speaking"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Regrade",
+      "item": [
+        {
+          "name": "Regrade Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai-grading/regrade/:userAnswerId",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai-grading", "regrade", ":userAnswerId"],
+              "variable": [
+                {
+                  "key": "userAnswerId",
+                  "value": "1",
+                  "description": "ID of the user answer to regrade"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+# FastAPI and server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.6
+
+# Whisper (install separately due to dependencies)
+openai-whisper
+
+# PyTorch - CPU only version (lighter and faster to install)
+--index-url https://download.pytorch.org/whl/cpu
+torch
+torchaudio
+
+# Additional utilities
+pydantic>=2.5.0
+python-dotenv>=1.0.0

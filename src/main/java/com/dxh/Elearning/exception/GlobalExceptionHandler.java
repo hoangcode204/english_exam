@@ -82,15 +82,18 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
 
         Map<String, Object> attributes = null;
-
         try {
             errorCode = ErrorCode.valueOf(enumKey);
+
             var constraintViolation = exception.getBindingResult()
-                    .getAllErrors().getFirst().unwrap(ConstraintViolation.class);
+                    .getAllErrors()
+                    .get(0)   // lấy phần tử đầu tiên
+                    .unwrap(ConstraintViolation.class);
 
             attributes = constraintViolation.getConstraintDescriptor().getAttributes();
-            log.info("attribute {}",attributes.toString());
-        } catch (IllegalArgumentException e){
+            log.info("attribute {}", attributes.toString());
+
+        } catch (IllegalArgumentException e) {
             log.info(e.getMessage());
         }
 
