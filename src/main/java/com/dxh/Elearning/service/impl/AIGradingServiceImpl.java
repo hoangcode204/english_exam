@@ -126,7 +126,7 @@ public class AIGradingServiceImpl implements AIGradingService {
                 .answerText(transcript)
                 .build();
 
-        // Call AI to grade
+        // Call AI to grade speaking with speaking-specific prompt
         String aiResponse = callAIForSpeakingGrading(question, transcript);
         
         // Parse AI response
@@ -241,12 +241,12 @@ public class AIGradingServiceImpl implements AIGradingService {
 
     private String callAIForSpeakingGrading(Question question, String transcript) {
         String promptTemplate = """
-                You are an experienced IELTS/TOEFL speaking examiner. Grade the following speaking response.
+                You are an experienced IELTS/TOEFL speaking examiner. Grade the following speaking response based on the TRANSCRIPT.
                 
                 Question: {questionContent}
                 Maximum Score: {maxScore}
                 
-                Transcript of Student's Answer:
+                Transcript of Student's Speaking Answer:
                 {transcript}
                 
                 IMPORTANT: You must respond ONLY with valid JSON. Do not include any explanatory text before or after the JSON.
@@ -258,11 +258,11 @@ public class AIGradingServiceImpl implements AIGradingService {
                   "detailedAnalysis": "Detailed analysis in Vietnamese",
                   "pronunciation": {{
                     "score": 22,
-                    "feedback": "Pronunciation feedback in Vietnamese"
+                    "feedback": "Pronunciation assessment based on transcript quality in Vietnamese"
                   }},
                   "fluency": {{
                     "score": 23,
-                    "feedback": "Fluency feedback in Vietnamese",
+                    "feedback": "Fluency assessment in Vietnamese",
                     "estimatedWPM": 150
                   }},
                   "vocabulary": {{
@@ -277,14 +277,13 @@ public class AIGradingServiceImpl implements AIGradingService {
                   }}
                 }}
                 
-                Evaluation criteria:
-                1. Pronunciation: Clarity and intelligibility (max 25 points)
-                2. Fluency: Speaking pace and natural flow (max 25 points)
-                3. Vocabulary: Range and appropriateness (max 25 points)
-                4. Grammar: Accuracy and complexity (max 25 points)
+                Evaluation criteria for Speaking (based on transcript):
+                1. Pronunciation: Assess based on transcript quality and clarity (max 25 points)
+                2. Fluency: Natural flow, appropriate speaking pace (max 25 points)
+                3. Vocabulary: Range, accuracy, and appropriateness (max 25 points)
+                4. Grammar: Accuracy and sentence structures (max 25 points)
                 
                 totalScore should be out of {maxScore}.
-                Estimate words per minute based on transcript length.
                 Provide constructive feedback in Vietnamese.
                 Return ONLY the JSON object, nothing else.
                 """;
