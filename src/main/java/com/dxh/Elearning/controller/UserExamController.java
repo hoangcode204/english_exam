@@ -1,15 +1,10 @@
 package com.dxh.Elearning.controller;
 
-import com.dxh.Elearning.dto.request.ExamRequest;
 import com.dxh.Elearning.dto.request.UserExamRequest;
 import com.dxh.Elearning.dto.response.ApiResponse;
-import com.dxh.Elearning.dto.response.ExamResponse;
-import com.dxh.Elearning.dto.response.PageResponse;
 import com.dxh.Elearning.dto.response.UserExamResponse;
-import com.dxh.Elearning.service.interfac.ExamService;
 import com.dxh.Elearning.service.interfac.UserExamService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -32,10 +27,18 @@ public class UserExamController {
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
     public ApiResponse<UserExamResponse> createExam(@RequestBody UserExamRequest req) {
-        return ApiResponse.<UserExamResponse>builder()
-                .code(HttpStatus.CREATED.value())
-                .message("Successfully created user exam")
-                .result(userExamService.create(req)).build();
+        return ApiResponse.<UserExamResponse>builder().code(HttpStatus.CREATED.value()).message("Successfully created user exam").result(userExamService.create(req)).build();
     }
 
+    @Operation(method = "GET", summary = "Get user exams", description = "Get list of exams the current user has taken")
+    @GetMapping("/my-exams")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
+    public ApiResponse<List<UserExamResponse>> getMyExams() {
+        List<UserExamResponse> exams = userExamService.getUserExams();
+        return ApiResponse.<List<UserExamResponse>>builder()
+                .code(HttpStatus.OK.value())
+                .message("Successfully retrieved user exams")
+                .result(exams)
+                .build();
+    }
 }

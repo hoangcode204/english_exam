@@ -1,7 +1,7 @@
 package com.dxh.Elearning.service.interfac;
 
 
-import com.dxh.Elearning.dto.request.QuestionRequest;
+import com.dxh.Elearning.dto.request.*;
 import com.dxh.Elearning.dto.response.ExamResponse;
 import com.dxh.Elearning.dto.response.PageResponse;
 import com.dxh.Elearning.dto.response.QuestionResponse;
@@ -18,4 +18,14 @@ public interface QuestionService {
     QuestionResponse createQuestionSpeaking(QuestionRequest req);
 
     PageResponse<List<QuestionResponse>> getQuestionsByExamPart(Long examPartId, int pageNo, int pageSize, String sortBy);
+
+    List<QuestionResponse> createMultipleReadingQuestions(ListQuestionRequest req);
+
+    QuestionResponse updateQuestionReading(Long id, UpdateQuestionReadingRequest req);
+
+    QuestionResponse updateQuestionListening(Long id, UpdateQuestionListeningRequest req, MultipartFile audioFile);
+
+    QuestionResponse updateQuestionSpeaking(Long id, UpdateQuestionSpeakingRequest req);
+
+    QuestionResponse updateQuestionWriting(Long id, UpdateQuestionWritingRequest req);
 }

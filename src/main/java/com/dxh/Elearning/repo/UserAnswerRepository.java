@@ -20,4 +20,6 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
     @Modifying
     @Query("DELETE FROM UserAnswer ua WHERE ua.userExamPart.id = :userExamPartId")
     void deleteByUserExamPartId(@Param("userExamPartId") Long userExamPartId);
+
+    List<UserAnswer> findAllByUserExamPart_Id(Long userExamPartId);
 }

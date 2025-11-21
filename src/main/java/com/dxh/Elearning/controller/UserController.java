@@ -44,6 +44,16 @@ public class UserController {
                 .build();
     }
 
+    @Operation(method = "GET", summary = "Get my info",
+            description = "Send a request via this API to get my info")
+    @GetMapping("/myInfo")
+    ApiResponse<UserResponse> getMyInfo(){
+        return ApiResponse.<UserResponse>builder()
+                .code(HttpStatus.OK.value())
+                .result(userService.getMyInfo())
+                .build();
+    }
+
     @Operation(method = "PUT", summary = "Update my user",
             description = "Send a request via this API to update my user")
     @PutMapping

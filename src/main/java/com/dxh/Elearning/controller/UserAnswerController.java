@@ -1,12 +1,10 @@
 package com.dxh.Elearning.controller;
 
-import com.dxh.Elearning.dto.request.SubmitRLPartRequest;
 import com.dxh.Elearning.dto.request.UserExamRequest;
 import com.dxh.Elearning.dto.response.ApiResponse;
-import com.dxh.Elearning.dto.response.SubmitRLPartResponse;
-import com.dxh.Elearning.dto.response.UserExamPartResponse;
+import com.dxh.Elearning.dto.response.UserAnswerResponse;
 import com.dxh.Elearning.dto.response.UserExamResponse;
-import com.dxh.Elearning.service.interfac.UserExamPartService;
+import com.dxh.Elearning.service.interfac.UserAnswerService;
 import com.dxh.Elearning.service.interfac.UserExamService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AccessLevel;
@@ -20,22 +18,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/userexamparts")
+@RequestMapping("/useranswers")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class UserExamPartController {
-    UserExamPartService userExamPartService;
+public class UserAnswerController {
+    UserAnswerService userAnswerService;
 
-    @Operation(method = "POST", summary = "Submit answer reading/listening", description = "Send a request via this API to submit answer reading/listening")
-    @PostMapping
+    @Operation(method = "GET", summary = "Get user answers by UserExamPart ID", description = "Retrieve list of answers for a specific exam part")
+    @GetMapping("/answers/{userExamPartId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
-    public ApiResponse<?> submitRLPart(@RequestBody SubmitRLPartRequest req) {
-        return ApiResponse.<SubmitRLPartResponse>builder()
+    public ApiResponse<List<UserAnswerResponse>> getAnswers(@PathVariable Long userExamPartId) {
+        List<UserAnswerResponse> answers = userAnswerService.getAnswersByUserExamPartId(userExamPartId);
+        return ApiResponse.<List<UserAnswerResponse>>builder()
                 .code(HttpStatus.OK.value())
-                .message("Part submitted successfully")
-                .result(userExamPartService.submitRLPart(req)).build();
+                .message("Successfully retrieved answers")
+                .result(answers)
+                .build();
     }
-
-
 }

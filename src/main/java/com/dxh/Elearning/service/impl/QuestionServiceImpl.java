@@ -1,7 +1,6 @@
 package com.dxh.Elearning.service.impl;
 
-import com.dxh.Elearning.dto.request.OptionRequest;
-import com.dxh.Elearning.dto.request.QuestionRequest;
+import com.dxh.Elearning.dto.request.*;
 import com.dxh.Elearning.dto.response.ExamResponse;
 import com.dxh.Elearning.dto.response.PageResponse;
 import com.dxh.Elearning.dto.response.QuestionResponse;
@@ -207,5 +206,148 @@ public class QuestionServiceImpl implements QuestionService {
                 .totalElements(questions.getTotalElements())
                 .build();
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<QuestionResponse> createMultipleReadingQuestions(ListQuestionRequest req) {
+
+        List<QuestionResponse> responses = new ArrayList<>();
+
+        for (QuestionRequest q : req.getQuestions()) {
+            QuestionResponse res = createQuestionReading(q);
+            responses.add(res);
+        }
+
+        return responses;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public QuestionResponse updateQuestionReading(Long questionId, UpdateQuestionReadingRequest req) {
+        // 1️⃣ Lấy Question
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new AppException(ErrorCode.QUESTION_NOT_FOUND));
+
+        // 2️⃣ Update nội dung
+        question.setContent(req.getContent());
+        question.setAudioUrl(req.getAudioUrl());
+        question.setMaxScore(req.getMaxScore());
+
+        // 3️⃣ Xử lý Option
+        // Xóa option cũ
+        optionRepository.deleteAll(question.getOptions());
+        question.getOptions().clear();
+
+        // Tạo option mới
+        Option correctOption = null;
+        List<Option> newOptions = new ArrayList<>();
+        for (OptionRequest o : req.getOptions()) {
+            Option option = Option.builder()
+                    .content(o.getContent())
+                    .question(question)
+                    .build();
+            option = optionRepository.save(option);
+            newOptions.add(option);
+
+            if (o.getTempId().equals(req.getCorrectTempId())) {
+                correctOption = option;
+            }
+        }
+
+        if (!newOptions.isEmpty()) {
+            question.setOptions(newOptions);
+        }
+
+        // 4️⃣ Gán đáp án đúng
+        question.setCorrectOption(correctOption);
+        question = questionRepository.save(question);
+
+        // 5️⃣ Map sang Response
+        return questionMapper.toQuestionResponse(question);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public QuestionResponse updateQuestionListening(Long questionId, UpdateQuestionListeningRequest req, MultipartFile audioFile) {
+        // 1️⃣ Lấy question
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new AppException(ErrorCode.QUESTION_NOT_FOUND));
+
+        // 2️⃣ Update nội dung
+        question.setContent(req.getContent());
+        question.setMaxScore(req.getMaxScore());
+
+        // 3️⃣ Upload audio mới nếu có
+        if (audioFile != null && !audioFile.isEmpty()) {
+            String audioUrl = awsS3Service.saveAudioToS3(audioFile);
+            question.setAudioUrl(audioUrl);
+        }
+
+        // 4️⃣ Xử lý option
+        optionRepository.deleteAll(question.getOptions());
+        question.getOptions().clear();
+
+        Option correctOption = null;
+        List<Option> newOptions = new ArrayList<>();
+        for (OptionRequest o : req.getOptions()) {
+            Option option = Option.builder()
+                    .content(o.getContent())
+                    .question(question)
+                    .build();
+            option = optionRepository.save(option);
+            newOptions.add(option);
+
+            if (o.getTempId().equals(req.getCorrectTempId())) {
+                correctOption = option;
+            }
+        }
+
+        if (!newOptions.isEmpty()) {
+            question.setOptions(newOptions);
+        }
+
+        // 5️⃣ Gán đáp án đúng
+        question.setCorrectOption(correctOption);
+        question = questionRepository.save(question);
+
+        return questionMapper.toQuestionResponse(question);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public QuestionResponse updateQuestionSpeaking(Long questionId, UpdateQuestionSpeakingRequest req) {
+        // 1️⃣ Lấy question
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new AppException(ErrorCode.QUESTION_NOT_FOUND));
+
+        // 2️⃣ Update nội dung
+        question.setContent(req.getContent());
+        question.setMaxScore(req.getMaxScore());
+
+        // 3️⃣ Lưu lại DB
+        question = questionRepository.save(question);
+
+        // 4️⃣ Map sang response
+        return questionMapper.toQuestionResponse(question);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public QuestionResponse updateQuestionWriting(Long questionId, UpdateQuestionWritingRequest req) {
+        // 1️⃣ Lấy question
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new AppException(ErrorCode.QUESTION_NOT_FOUND));
+
+        // 2️⃣ Update nội dung và điểm tối đa
+        question.setContent(req.getContent());
+        question.setMaxScore(req.getMaxScore());
+
+        // 3️⃣ Lưu lại DB
+        question = questionRepository.save(question);
+
+        // 4️⃣ Map sang response
+        return questionMapper.toQuestionResponse(question);
+    }
+
 
 }

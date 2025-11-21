@@ -53,7 +53,18 @@ public enum ErrorCode {
     EXAM_NOT_EXISTED(400, "exam not found",HttpStatus.BAD_REQUEST ),
     USER_EXAM_PART_NOT_EXISTED(400, "exam not found",HttpStatus.BAD_REQUEST ),
     QUESTION_NOT_FOUND(400, "question not found",HttpStatus.BAD_REQUEST ),
-    EXAM_PART_NOT_EXISTED(400, "exam part not found",HttpStatus.BAD_REQUEST );
+    EXAM_PART_NOT_EXISTED(400, "exam part not found",HttpStatus.BAD_REQUEST ),
+    USER_EXAM_PART_NOT_FOUND(404, "User exam part not found", HttpStatus.NOT_FOUND),
+    INVALID_QUESTION_TYPE(400, "Invalid question type for this operation", HttpStatus.BAD_REQUEST),
+    INVALID_SKILL_TYPE(400, "Invalid skill type for this operation", HttpStatus.BAD_REQUEST),
+    USER_ANSWER_NOT_FOUND(404, "User answer not found", HttpStatus.NOT_FOUND),
+    TRANSCRIPT_REQUIRED(400, "Transcript is required for speaking grading", HttpStatus.BAD_REQUEST),
+    AI_RESPONSE_PARSE_ERROR(500, "Failed to parse AI response", HttpStatus.INTERNAL_SERVER_ERROR),
+    TRANSCRIPTION_FAILED(500, "Audio transcription failed", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_FILE(400, "Invalid audio file", HttpStatus.BAD_REQUEST),
+    WHISPER_SERVICE_UNAVAILABLE(503, "Whisper service is unavailable", HttpStatus.SERVICE_UNAVAILABLE),
+    USER_EXAM_NOT_EXISTED(400,"user exam not found" ,HttpStatus.BAD_REQUEST );
+
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

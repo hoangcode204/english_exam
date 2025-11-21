@@ -271,6 +271,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserUpdateResponse(userRepository.save(user));
     }
 
+    @Override
+    public UserResponse getMyInfo() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        return userRepository.findByUsername(name).map(userMapper::toUserResponse).orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
+
 
     private String generateAlphanumericCode(int length) {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

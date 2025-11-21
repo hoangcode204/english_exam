@@ -4,6 +4,14 @@ server:
     context-path: /api
 
 spring:
+  ai:
+    openai:
+      api-key: AIzaSyBMT6EwdTobiK7DRf2RHNxpHoEVbIZl_VA
+      chat:
+        base-url: https://generativelanguage.googleapis.com
+        completions-path: /v1beta/openai/chat/completions
+        options:
+          model: gemini-2.0-flash
   servlet:
     multipart:
       enabled: true
@@ -46,3 +54,9 @@ aws:
   s3.secret-key: ${S3_SECRET_KEY}
   s3.access-key: ${S3_ACCESS_KEY}
   s3.bucket-name: "hung-hotel-images"
+
+# Whisper Service Configuration
+whisper:
+  service:
+    url: http://localhost:8000  # URL of Whisper FastAPI service
+    timeout: 30000              # Timeout in milliseconds (30 seconds)

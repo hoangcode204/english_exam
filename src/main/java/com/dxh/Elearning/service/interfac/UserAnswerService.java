@@ -1,13 +1,12 @@
 package com.dxh.Elearning.service.interfac;
 
 import com.dxh.Elearning.dto.request.UserExamRequest;
+import com.dxh.Elearning.dto.response.UserAnswerResponse;
 import com.dxh.Elearning.dto.response.UserExamResponse;
 
 import java.util.List;
 
-public interface UserExamService {
+public interface UserAnswerService {
 
-    UserExamResponse create(UserExamRequest req);
-
-    List<UserExamResponse> getUserExams();
+    List<UserAnswerResponse> getAnswersByUserExamPartId(Long userExamPartId);
 }

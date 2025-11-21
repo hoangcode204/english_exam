@@ -27,12 +27,15 @@ public class UserAnswer extends AbstractEntity<Long> {
 
     Long selectedOptionId; // đáp án trắc nghiệm
     @Lob
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     String answerText;     // bài viết dài, transcript Speaking
     String audioUrl;       // link ghi âm Speaking
 
     Double score;          // điểm auto (Listening/Reading)
     Double aiScore;        // điểm AI (Writing/Speaking)
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     String aiFeedback;     // nhận xét từ AI
 }
 

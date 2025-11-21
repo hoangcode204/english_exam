@@ -4,6 +4,7 @@ import com.dxh.Elearning.dto.request.AnswerRLPartRequest;
 import com.dxh.Elearning.dto.request.SubmitRLPartRequest;
 import com.dxh.Elearning.dto.request.UserExamRequest;
 import com.dxh.Elearning.dto.response.SubmitRLPartResponse;
+import com.dxh.Elearning.dto.response.UserExamPartResponse;
 import com.dxh.Elearning.dto.response.UserExamResponse;
 import com.dxh.Elearning.entity.*;
 import com.dxh.Elearning.exception.AppException;
@@ -25,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -129,12 +131,6 @@ public class UserExamPartServiceImpl implements UserExamPartService {
         return userExamPartMapper.toSubmitRLPartResponse(save);
     }
 
-
-    private User checkUser(){
-        return userRepository.findByUsername(
-                SecurityContextHolder.getContext().getAuthentication().getName()
-        ).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-    }
 
 
 }

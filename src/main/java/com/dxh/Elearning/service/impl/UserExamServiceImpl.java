@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +71,16 @@ public class UserExamServiceImpl implements UserExamService {
         UserExam save = userExamRepository.save(userExam);
 
         return userExamMapper.toUserExamResponse(save);
+    }
+
+    @Transactional
+    @Override
+    public List<UserExamResponse> getUserExams() {
+        User user = checkUser();
+        List<UserExam> exams = userExamRepository.findAllByUser_Id(user.getId());
+        return exams.stream()
+                .map(userExamMapper::toUserExamResponse)
+                .collect(Collectors.toList());
     }
 
 

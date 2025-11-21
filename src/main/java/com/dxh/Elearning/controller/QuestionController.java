@@ -1,7 +1,6 @@
 package com.dxh.Elearning.controller;
 
-import com.dxh.Elearning.dto.request.ExamPartRequest;
-import com.dxh.Elearning.dto.request.QuestionRequest;
+import com.dxh.Elearning.dto.request.*;
 import com.dxh.Elearning.dto.response.ApiResponse;
 import com.dxh.Elearning.dto.response.ExamPartResponse;
 import com.dxh.Elearning.dto.response.PageResponse;
@@ -39,6 +38,34 @@ public class QuestionController {
                 .result(questionService.createQuestionReading(req)).build();
     }
 
+    //update question
+    @Operation(method = "PUT", summary = "Update reading question", description = "Update a reading question by its ID")
+    @PutMapping("/reading/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ApiResponse<QuestionResponse> updateReadingQuestion(
+            @PathVariable Long id,
+            @RequestBody UpdateQuestionReadingRequest req) {
+        QuestionResponse updated = questionService.updateQuestionReading(id, req);
+        return ApiResponse.<QuestionResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Reading question updated successfully")
+                .result(updated)
+                .build();
+    }
+
+    //tạo theo list reading
+    @PostMapping("/reading/bulk")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ApiResponse<List<QuestionResponse>> createMultipleReadingQuestions(
+            @RequestBody ListQuestionRequest req) {
+
+        return ApiResponse.<List<QuestionResponse>>builder()
+                .code(HttpStatus.CREATED.value())
+                .message("Successfully created questions")
+                .result(questionService.createMultipleReadingQuestions(req))
+                .build();
+    }
+
     @Operation(
             method = "POST",
             summary = "Add new question listening",
@@ -59,6 +86,24 @@ public class QuestionController {
                 .build();
     }
 
+    //update question listening
+    @Operation(method = "PUT", summary = "Update listening question", description = "Update a listening question by its ID")
+    @PutMapping("/listening/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ApiResponse<QuestionResponse> updateQuestionListening(
+            @PathVariable Long id,
+            @RequestPart("question") UpdateQuestionListeningRequest req,
+            @RequestPart(value = "audio", required = false) MultipartFile audioFile) {
+
+        QuestionResponse updated = questionService.updateQuestionListening(id, req, audioFile);
+
+        return ApiResponse.<QuestionResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Listening question updated successfully")
+                .result(updated)
+                .build();
+    }
+
     @Operation(
             method = "POST",
             summary = "Add new question speaking",
@@ -75,6 +120,22 @@ public class QuestionController {
                 .build();
     }
 
+    @Operation(method = "PUT", summary = "Update speaking question", description = "Update a speaking question by its ID")
+    @PutMapping("/speaking/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ApiResponse<QuestionResponse> updateSpeakingQuestion(
+            @PathVariable Long id,
+            @RequestBody UpdateQuestionSpeakingRequest req) {
+
+        QuestionResponse updated = questionService.updateQuestionSpeaking(id, req);
+
+        return ApiResponse.<QuestionResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Speaking question updated successfully")
+                .result(updated)
+                .build();
+    }
+
     @Operation(
             method = "POST",
             summary = "Add new question writing",
@@ -88,6 +149,22 @@ public class QuestionController {
                 .code(HttpStatus.CREATED.value())
                 .message("Successfully created writing question")
                 .result(response)
+                .build();
+    }
+
+    @Operation(method = "PUT", summary = "Update writing question", description = "Update a writing question by its ID")
+    @PutMapping("/writing/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ApiResponse<QuestionResponse> updateWritingQuestion(
+            @PathVariable Long id,
+            @RequestBody UpdateQuestionWritingRequest req) {
+
+        QuestionResponse updated = questionService.updateQuestionWriting(id, req);
+
+        return ApiResponse.<QuestionResponse>builder()
+                .code(HttpStatus.OK.value())
+                .message("Writing question updated successfully")
+                .result(updated)
                 .build();
     }
 
@@ -109,5 +186,7 @@ public class QuestionController {
                 .result(questionService.getQuestionsByExamPart(examPartId, pageNo, pageSize, sortBy))
                 .build();
     }
+
+
 
 }
